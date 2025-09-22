@@ -1,0 +1,69 @@
+# ==========================
+# Build / Output
+# ==========================
+/target/
+*.class
+*.jar
+*.war
+*.ear
+
+# ==========================
+# IDEs
+# ==========================
+# IntelliJ IDEA
+/.idea/
+/*.iml
+/out/
+/*.iws
+
+# Eclipse
+/.project
+/.classpath
+/.settings/
+/*.launch
+
+# VS Code
+/.vscode/
+
+# ==========================
+# OS files
+# ==========================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+# ==========================
+# Logs / Temp
+# ==========================
+*.log
+*.tmp
+*.swp
+*.swo
+hs_err_pid*
+
+# ==========================
+# Maven
+# ==========================
+/mvnw
+/mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+/logs/
+dependency-reduced-pom.xml
+/release.properties
+/target/
+
+# ==========================
+# Spring Boot
+# ==========================
+spring.log
+*.properties
+*.yml
