@@ -1,4 +1,4 @@
-package com.uniesp.backflix.demo;
+package com.uniesp.backflix;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

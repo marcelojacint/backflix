@@ -1,4 +1,4 @@
-package com.uniesp.backflix.demo.model;
+package com.uniesp.backflix.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
