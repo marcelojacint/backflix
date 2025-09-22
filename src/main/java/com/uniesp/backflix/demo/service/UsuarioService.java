@@ -1,8 +1,9 @@
-package com.uniesp.backflix.service;
+package com.uniesp.backflix.demo.service;
 
-import com.uniesp.backflix.model.Cartao;
-import com.uniesp.backflix.model.Usuario;
-import com.uniesp.backflix.repository.UsuarioRepository;
+import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
+import com.uniesp.backflix.demo.model.Cartao;
+import com.uniesp.backflix.demo.model.Usuario;
+import com.uniesp.backflix.demo.repository.UsuarioRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,12 +30,12 @@ public class UsuarioService {
 
     public Usuario buscar(String id) {
 
-        return repository.findById(UUID.fromString(id)).orElseThrow(() -> new RuntimeException("usuário não encontrado!"));
+        return repository.findById(UUID.fromString(id)).orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
     }
 
     public Usuario atualizar(String id, Usuario usuario) {
         Usuario existente = repository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
 
         if (usuario.getNomeCompleto() != null) existente.setNomeCompleto(usuario.getNomeCompleto());
         if (usuario.getEmail() != null) existente.setEmail(usuario.getEmail());
@@ -51,7 +52,7 @@ public class UsuarioService {
                 .ifPresentOrElse(
                         repository::delete,
                         () -> {
-                            throw new RuntimeException("Usuário não encontrado!");
+                            throw new EntidadeNaoEncontradaException("Usuário não encontrado!");
                         }
                 );
     }
@@ -59,7 +60,7 @@ public class UsuarioService {
     public void atualizarCartao(String id, Cartao cartao) {
         UUID uuid = UUID.fromString(id);
         Usuario usuario = repository.findById(uuid)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado!"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado!"));
 
         usuario.setCartao(cartao);
         repository.save(usuario);
