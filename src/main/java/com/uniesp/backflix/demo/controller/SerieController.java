@@ -1,7 +1,8 @@
-package com.uniesp.backflix.controller;
+package com.uniesp.backflix.demo.controller;
 
-import com.uniesp.backflix.model.Serie;
-import com.uniesp.backflix.service.SerieService;
+import com.uniesp.backflix.demo.controller.utils.UriUtils;
+import com.uniesp.backflix.demo.model.Serie;
+import com.uniesp.backflix.demo.service.SerieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,7 @@ public class SerieController {
     @PostMapping
     public ResponseEntity<Serie> salvar(@RequestBody Serie serie) {
         Serie serieSalva = service.salvar(serie);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(serieSalva.getId())
-                .toUri();
+        URI uri = UriUtils.criarUriParaRecurso(serieSalva.getId());
         return ResponseEntity.created(uri).body(serieSalva);
     }
 

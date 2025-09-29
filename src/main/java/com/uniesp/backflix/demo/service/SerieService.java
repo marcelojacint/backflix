@@ -1,8 +1,8 @@
-package com.uniesp.backflix.service;
+package com.uniesp.backflix.demo.service;
 
-import com.uniesp.backflix.exception.EntidadeNaoEncontradaException;
-import com.uniesp.backflix.model.Serie;
-import com.uniesp.backflix.repository.SerieRepository;
+import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
+import com.uniesp.backflix.demo.model.Serie;
+import com.uniesp.backflix.demo.repository.SerieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

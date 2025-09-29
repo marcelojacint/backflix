@@ -1,9 +1,9 @@
-package com.uniesp.backflix.controller;
+package com.uniesp.backflix.demo.controller;
 
 
-import com.uniesp.backflix.model.Cartao;
-import com.uniesp.backflix.model.Usuario;
-import com.uniesp.backflix.service.UsuarioService;
+import com.uniesp.backflix.demo.model.Cartao;
+import com.uniesp.backflix.demo.model.Usuario;
+import com.uniesp.backflix.demo.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

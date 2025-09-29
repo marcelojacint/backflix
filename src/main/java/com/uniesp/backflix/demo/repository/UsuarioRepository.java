@@ -1,6 +1,6 @@
-package com.uniesp.backflix.repository;
+package com.uniesp.backflix.demo.repository;
 
-import com.uniesp.backflix.model.Usuario;
+import com.uniesp.backflix.demo.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

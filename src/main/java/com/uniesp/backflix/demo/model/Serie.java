@@ -1,4 +1,4 @@
-package com.uniesp.backflix.model;
+package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -38,7 +38,7 @@ public class Serie {
     @Column(name = "quantidade_episodios", nullable = false)
     private Integer quantidadeEpisodios;
 
-    @NotBlank(message = "campo obrigatório!")
+
     @Column(name = "genero", nullable = false, length = 40)
     private String genero;
 

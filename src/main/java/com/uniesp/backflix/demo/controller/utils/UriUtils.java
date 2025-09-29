@@ -1,4 +1,4 @@
-package com.uniesp.backflix.controller.utils;
+package com.uniesp.backflix.demo.controller.utils;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
