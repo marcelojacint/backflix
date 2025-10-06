@@ -41,9 +41,10 @@ public class Filme {
     @Column(name = "data_lancamento")
     private String dataLancamento;
 
-    @NotBlank(message = "campo obrigatório!")
-    @Column(length = 50)
-    private String genero;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "genero_id")
+    private Genero genero;
 
     @NotNull(message = "campo obrigatório!")
     @Column(name = "duracao_minutos")

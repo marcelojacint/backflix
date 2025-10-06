@@ -16,4 +16,12 @@ public class UriUtils {
                 .buildAndExpand(id)
                 .toUri();
     }
+
+    public static URI criarUriParaRecurso_Genero(Long id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id)
+                .toUri();
+    }
 }
