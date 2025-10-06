@@ -39,8 +39,10 @@ public class Serie {
     private Integer quantidadeEpisodios;
 
 
-    @Column(name = "genero", nullable = false, length = 40)
-    private String genero;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "genero_id")
+    private Genero genero;
 
     @NotBlank(message = "campo obrigatório!")
     @Column(name = "classificacao_idade", nullable = false, length = 20)
