@@ -1,19 +1,16 @@
 spring:
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=backflix_db;encrypt=true;trustServerCertificate=true
+    url: jdbc:h2:mem:backflixdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    driver-class-name: org.h2.Driver
     username: sa
-    password: 050413
-    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
 
   jpa:
     hibernate:
-      ddl-auto: update
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.SQLServerDialect
+      ddl-auto: update    # cria/atualiza tabelas automaticamente
+    show-sql: true        # mostra SQL no console
+    database-platform: org.hibernate.dialect.H2Dialect
 
-server:
-  port: 8086
-
+  h2:
+    console:
+      enabled: true       # habilita o console web
+      path: /h2-console   # caminho de acesso no navegador
