@@ -43,9 +43,12 @@
 # .idea/modules
 # *.iml
 # *.ipr
-application.yml
+src/main/resources/application.yml
+
 # CMake
 cmake-build-*/
+
+
 
 # Mongo Explorer plugin
 .idea/**/mongoSettings.xml
