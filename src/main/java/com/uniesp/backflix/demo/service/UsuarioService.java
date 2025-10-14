@@ -1,9 +1,11 @@
 package com.uniesp.backflix.demo.service;
 
 import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
-import com.uniesp.backflix.demo.model.Cartao;
 import com.uniesp.backflix.demo.model.Usuario;
 import com.uniesp.backflix.demo.repository.UsuarioRepository;
+import com.uniesp.backflix.demo.service.converter.UsuarioConverter;
+import com.uniesp.backflix.demo.service.dtos.UsuarioRequestDTO;
+import com.uniesp.backflix.demo.service.dtos.UsuarioResponseDTO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,23 +21,51 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
-    public List<Usuario> listar() {
-        return repository.findAll();
+    public List<UsuarioResponseDTO> listar() {
+        List<Usuario> listaUsuarios = repository.findAll();
+
+        if (listaUsuarios.isEmpty()) {
+            throw new EntidadeNaoEncontradaException("lista de usuários vazia!");
+        }
+        List<UsuarioResponseDTO> listaUsuariosDTO = listaUsuarios
+                .stream()
+                .map(UsuarioConverter::paraUsuarioResponseDTO)
+                .toList();
+
+        return listaUsuariosDTO;
     }
 
-    public Usuario salvar(Usuario usuario) {
-        //validacao de usuario com email ou cpf iguais no banco
-        return repository.save(usuario);
+    public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioDto) {
+        Usuario usuario = UsuarioConverter.paraUsuario(usuarioDto);
+        validaEmailECpfUsuario(usuario);
+        repository.save(usuario);
+        return UsuarioConverter.paraUsuarioResponseDTO(usuario);
+
     }
 
-    public Usuario buscar(String id) {
-
-        return repository.findById(UUID.fromString(id)).orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
+    private void validaEmailECpfUsuario(Usuario usuario) {
+        if (!repository.existsByEmailAndCpf(usuario.getEmail(), usuario.getCpf())) {
+            throw new EntidadeNaoEncontradaException("usuário já existe no banco!");
+        }
     }
 
-    public Usuario atualizar(String id, Usuario usuario) {
+    public UsuarioResponseDTO buscar(String cpf) {
+
+        Usuario usuario = verificaUsuarioPorcpf(cpf);
+        UsuarioResponseDTO usuarioResponseDTO = UsuarioConverter.paraUsuarioResponseDTO(usuario);
+        return usuarioResponseDTO;
+    }
+
+    private Usuario verificaUsuarioPorcpf(String cpf) {
+        return repository.findByCpf(cpf)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
+    }
+
+    public UsuarioResponseDTO atualizar(String id, UsuarioRequestDTO usuarioRequestDTO) {
         Usuario existente = repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
+
+        Usuario usuario = UsuarioConverter.paraUsuario(usuarioRequestDTO);
 
         if (usuario.getNomeCompleto() != null) existente.setNomeCompleto(usuario.getNomeCompleto());
         if (usuario.getEmail() != null) existente.setEmail(usuario.getEmail());
@@ -44,26 +74,17 @@ public class UsuarioService {
         if (usuario.getDataNascimento() != null) existente.setDataNascimento(usuario.getDataNascimento());
         if (usuario.getCartao() != null) existente.setCartao(usuario.getCartao());
 
-        return repository.save(existente);
+        Usuario usuarioSalvo = repository.save(existente);
+
+        UsuarioResponseDTO usuarioResponseDTO = UsuarioConverter.paraUsuarioResponseDTO(usuarioSalvo);
+
+        return usuarioResponseDTO;
     }
 
     public void deletar(String id) {
         repository.findById(UUID.fromString(id))
-                .ifPresentOrElse(
-                        repository::delete,
-                        () -> {
-                            throw new EntidadeNaoEncontradaException("Usuário não encontrado!");
-                        }
-                );
-    }
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
 
-    public void atualizarCartao(String id, Cartao cartao) {
-        UUID uuid = UUID.fromString(id);
-        Usuario usuario = repository.findById(uuid)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado!"));
-
-        usuario.setCartao(cartao);
-        repository.save(usuario);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.uniesp.backflix.demo.controller;
 
 
-import com.uniesp.backflix.demo.model.Cartao;
-import com.uniesp.backflix.demo.model.Usuario;
+import com.uniesp.backflix.demo.controller.utils.UriUtils;
 import com.uniesp.backflix.demo.service.UsuarioService;
+import com.uniesp.backflix.demo.service.dtos.UsuarioRequestDTO;
+import com.uniesp.backflix.demo.service.dtos.UsuarioResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -19,32 +19,30 @@ public class UsuarioController {
     private final UsuarioService service;
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> listar() {
-        List<Usuario> usuarios = service.listar();
-        return ResponseEntity.ok(usuarios);
+    public ResponseEntity<List<UsuarioResponseDTO>> listar() {
+        List<UsuarioResponseDTO> listaUsuariosDTO = service.listar();
+        return ResponseEntity.ok(listaUsuariosDTO);
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> salvar(@RequestBody Usuario usuario) {
-        System.out.println(usuario);
-        Usuario usuarioSalvo = service.salvar(usuario);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(usuarioSalvo.getId())
-                .toUri();
-        return ResponseEntity.created(uri).body(usuarioSalvo);
+    public ResponseEntity<UsuarioResponseDTO> salvar(@RequestBody UsuarioRequestDTO usuarioDto) {
+
+        UsuarioResponseDTO usuarioResponseDTO = service.salvar(usuarioDto);
+
+        URI uri = UriUtils.criarUriParaRecurso(usuarioResponseDTO.id());
+
+        return ResponseEntity.created(uri).body(usuarioResponseDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> buscar(@PathVariable("id") String id) {
-        Usuario usuario = service.buscar(id);
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<UsuarioResponseDTO> buscar(@PathVariable("id") String id) {
+        UsuarioResponseDTO usuarioResponseDTO = service.buscar(id);
+        return ResponseEntity.ok(usuarioResponseDTO);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable String id, @RequestBody Usuario usuario) {
-        Usuario usuarioAtualizado = service.atualizar(id, usuario);
+    public ResponseEntity<Void> atualizar(@PathVariable String id, @RequestBody UsuarioRequestDTO usuario) {
+        service.atualizar(id, usuario);
         return ResponseEntity.noContent().build();
     }
 
@@ -54,9 +52,4 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/cartao")
-    public ResponseEntity<Void> atualizarCartao(@PathVariable String id, @RequestBody Cartao cartao) {
-        service.atualizarCartao(id, cartao);
-        return ResponseEntity.noContent().build();
-    }
 }
