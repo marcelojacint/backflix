@@ -2,9 +2,11 @@ package com.uniesp.backflix.demo.service.dtos;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class MinhaListaRequestDTO {
-    private Long idFilme;
-    private Long idSerie;
-    private Long idUsuario;
+    private UUID idFilme;
+    private UUID idSerie;
+    private UUID idUsuario;
 }
