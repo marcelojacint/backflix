@@ -3,6 +3,7 @@ package com.uniesp.backflix.demo.common;
 import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
 import com.uniesp.backflix.demo.service.dtos.erro.ErroCampo;
 import com.uniesp.backflix.demo.service.dtos.erro.ErroResposta;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.List;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ErroResposta handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        log.error("erro de validação: {} ", e.getMessage());
 
         List<FieldError> fieldErrors = e.getFieldErrors();
 

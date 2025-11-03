@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:db_backflix
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  output:
+    ansi:
+      enabled: ALWAYS
+
+logging:
+  pattern:
+    console: '%clr(%d{dd-MM-yyyy HH:mm:ss}){faint} %clr(%5p) %clr([%t]){faint} %clr(%-40.40logger){cyan} %clr(:){yellow} %m%n'
+  file:
+    name: app.log
+  level:
+    root: info
+    com:
+      uniesp:
+        backflix: trace
+    org:
+      springframework:
+        web: debug
+
+
+# level de log
+# trace - (mais detalhado - rastreamento minucioso)pega todos os outros
+# debug - pega todos abaixo, menos o trace, etc
+#info
+# warn
+# error
