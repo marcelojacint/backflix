@@ -8,11 +8,11 @@ import com.uniesp.backflix.demo.service.dtos.UsuarioResponseDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/usuario")
@@ -22,9 +22,12 @@ public class UsuarioController {
     private final UsuarioService service;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioResponseDTO>> listar() {
-        List<UsuarioResponseDTO> listaUsuariosDTO = service.listar();
-        return ResponseEntity.ok(listaUsuariosDTO);
+    public ResponseEntity<Page<UsuarioResponseDTO>> listarUsuarios(
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+
+        Page<UsuarioResponseDTO> usuarios = service.listar(pagina, tamanho);
+        return ResponseEntity.ok(usuarios);
     }
 
     @PostMapping

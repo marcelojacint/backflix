@@ -8,9 +8,11 @@ import com.uniesp.backflix.demo.service.dtos.UsuarioRequestDTO;
 import com.uniesp.backflix.demo.service.dtos.UsuarioResponseDTO;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 
@@ -21,18 +23,15 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
-    public List<UsuarioResponseDTO> listar() {
-        List<Usuario> listaUsuarios = repository.findAll();
+    public Page<UsuarioResponseDTO> listar(int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        Page<Usuario> usuariosPage = repository.findAll(pageable);
 
-        if (listaUsuarios.isEmpty()) {
-            throw new EntidadeNaoEncontradaException("lista de usuários vazia!");
+        if (usuariosPage.isEmpty()) {
+            throw new EntidadeNaoEncontradaException("Nenhum usuário encontrado!");
         }
-        List<UsuarioResponseDTO> listaUsuariosDTO = listaUsuarios
-                .stream()
-                .map(UsuarioConverter::paraUsuarioResponseDTO)
-                .toList();
 
-        return listaUsuariosDTO;
+        return usuariosPage.map(UsuarioConverter::paraUsuarioResponseDTO);
     }
 
     public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioDto) {

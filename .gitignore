@@ -43,7 +43,7 @@
 # .idea/modules
 # *.iml
 # *.ipr
-src/main/resources/application.yml
+
 
 # CMake
 cmake-build-*/
