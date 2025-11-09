@@ -2,12 +2,14 @@ package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import lombok.Data;
 import java.util.UUID;
 
 @Entity
 @Table(name = "series")
 @Data
+@Builder
 public class Serie {
 
     @Id

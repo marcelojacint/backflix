@@ -1,39 +1,49 @@
 package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
-
-import javax.naming.Name;
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
 @Table(name = "avaliacoes")
 @Data
+@Builder
 public class Avaliacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario",nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_usuario", nullable = false)
+    @NotNull(message = "Usuário é obrigatório")
     private Usuario usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_filme")
     private Filme filme;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_serie")
     private Serie serie;
 
     @Column(name = "comentario", nullable = false, length = 300)
     private String comentario;
 
-
+    @Column(name = "data_avaliacao", nullable = false)
     private LocalDate dataAvaliacao = LocalDate.now();
 
-
+    @PrePersist
+    @PreUpdate
+    private void validate() {
+        if (filme == null && serie == null) {
+            throw new IllegalStateException("Pelo menos um filme ou série deve ser informado");
+        }
+        if (filme != null && serie != null) {
+            throw new IllegalStateException("Avaliação deve estar associada a um filme OU uma série, não ambos");
+        }
+    }
 }
