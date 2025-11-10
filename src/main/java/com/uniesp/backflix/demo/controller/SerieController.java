@@ -9,6 +9,7 @@ import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
 import com.uniesp.backflix.demo.service.dtos.SerieRequest;
 import com.uniesp.backflix.demo.service.dtos.SerieResponse;
 import jakarta.validation.Valid;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/series")
 @RequiredArgsConstructor
+@Builder
 public class SerieController {
 
     private final SerieService service;
@@ -65,15 +67,16 @@ public class SerieController {
     public ResponseEntity<SerieResponse> salvar(@Valid @RequestBody SerieRequest request) {
         Genero genero = generoService.buscarPorId(request.getGeneroId());
 
-        Serie serie = new Serie();
-        serie.setTituloSerie(request.getTituloSerie());
-        serie.setSinopse(request.getSinopse());
-        serie.setNota(request.getNota());
-        serie.setDataLancamento(request.getDataLancamento());
-        serie.setQuantidadeTemporadas(request.getQuantidadeTemporadas());
-        serie.setQuantidadeEpisodios(request.getQuantidadeEpisodios());
-        serie.setClassificacaoIdade(request.getClassificacaoIdade());
-        serie.setGenero(genero);
+        Serie serie = Serie.builder()
+                .tituloSerie(request.getTituloSerie())
+                .sinopse(request.getSinopse())
+                .nota(request.getNota())
+                .dataLancamento(request.getDataLancamento())
+                .quantidadeTemporadas(request.getQuantidadeTemporadas())
+                .quantidadeEpisodios(request.getQuantidadeEpisodios())
+                .classificacaoIdade(request.getClassificacaoIdade())
+                .genero(genero)
+                .build();
 
         Serie salva = service.salvar(serie);
 
@@ -97,15 +100,17 @@ public class SerieController {
     public ResponseEntity<Void> atualizar(@PathVariable String id, @Valid @RequestBody SerieRequest request) {
         Genero genero = generoService.buscarPorId(request.getGeneroId());
 
-        Serie serie = new Serie();
-        serie.setTituloSerie(request.getTituloSerie());
-        serie.setSinopse(request.getSinopse());
-        serie.setNota(request.getNota());
-        serie.setDataLancamento(request.getDataLancamento());
-        serie.setQuantidadeTemporadas(request.getQuantidadeTemporadas());
-        serie.setQuantidadeEpisodios(request.getQuantidadeEpisodios());
-        serie.setClassificacaoIdade(request.getClassificacaoIdade());
-        serie.setGenero(genero);
+        Serie serie = Serie.builder()
+                .tituloSerie(request.getTituloSerie())
+                .sinopse(request.getSinopse())
+                .nota(request.getNota())
+                .dataLancamento(request.getDataLancamento())
+                .quantidadeTemporadas(request.getQuantidadeTemporadas())
+                .quantidadeEpisodios(request.getQuantidadeEpisodios())
+                .classificacaoIdade(request.getClassificacaoIdade())
+                .genero(genero)
+                .build();
+
 
         service.atualizar(id, serie);
         return ResponseEntity.noContent().build();
