@@ -2,6 +2,7 @@ package com.uniesp.backflix.demo.controller;
 
 import com.uniesp.backflix.demo.model.Avaliacao;
 import com.uniesp.backflix.demo.service.AvaliacaoService;
+import com.uniesp.backflix.demo.service.dtos.AvaliacaoResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,8 @@ public class AvaliacaoController {
 
     @GetMapping
     public ResponseEntity<List<Avaliacao>> listar() {
-        return ResponseEntity.ok(service.listar());
+        List<Avaliacao> listaAvaliacaoDTO = service.listar();
+        return ResponseEntity.ok(listaAvaliacaoDTO);
     }
 
 

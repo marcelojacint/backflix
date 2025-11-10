@@ -1,6 +1,7 @@
 package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -40,4 +41,6 @@ public class Usuario {
     })
     private Cartao cartao;
 
+    public void setId(@NotNull(message = "ID do usuário é obrigatório!") UUID uuid) {
+    }
 }
