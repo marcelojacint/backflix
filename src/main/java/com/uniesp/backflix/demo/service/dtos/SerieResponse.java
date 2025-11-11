@@ -11,6 +11,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class SerieResponse {
     private UUID id;
+    private String nome;
     private String tituloSerie;
     private String sinopse;
     private Double nota;

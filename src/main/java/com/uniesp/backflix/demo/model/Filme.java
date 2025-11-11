@@ -25,34 +25,29 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "nome", nullable = false, length = 100)
+    private String nome;
 
-    @NotBlank(message = "campo obrigatório!")
     @Column(nullable = false, length = 100)
     private String titulo;
 
-    @NotBlank(message = "campo obrigatório!")
     @Column(name = "sinpse", length = 200)
     private String sinopse;
 
-    @NotNull(message = "campo obrigatório!")
     @Column(name = "nota", length = 10)
     @Size(min = 1, max = 10)
     private Integer nota;
 
-    @NotBlank(message = "campo obrigatório!")
     @Column(name = "data_lancamento")
     private String dataLancamento;
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "genero_id")
     private Genero genero;
 
-    @NotNull(message = "campo obrigatório!")
     @Column(name = "duracao_minutos")
     private Integer duracaoMinutos;
 
-    @NotBlank(message = "campo obrigatório!")
     @Column(name = "classificacao_indicativa", length = 10)
     private String classificacaoIndicativa;
 }

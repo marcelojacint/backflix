@@ -1,5 +1,6 @@
 package com.uniesp.backflix.demo.service.dtos;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,9 @@ import lombok.Data;
 
 @Data
 public class SerieRequest {
+
+    @NotBlank(message = "campo obrigatório!")
+    private String nome;
 
     @NotBlank(message = "O campo 'Título' é obrigatório.")
     private String tituloSerie;

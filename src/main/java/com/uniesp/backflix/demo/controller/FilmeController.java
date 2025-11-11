@@ -30,6 +30,7 @@ public class FilmeController {
         List<FilmeResponse> filmes = filmeService.listar().stream()
                 .map(f -> new FilmeResponse(
                         f.getId(),
+                        f.getNome(),
                         f.getTitulo(),
                         f.getSinopse(),
                         f.getNota(),
@@ -47,6 +48,7 @@ public class FilmeController {
         Filme f = filmeService.buscarPorId(id);
         FilmeResponse response = new FilmeResponse(
                 f.getId(),
+                f.getNome(),
                 f.getTitulo(),
                 f.getSinopse(),
                 f.getNota(),
@@ -76,6 +78,7 @@ public class FilmeController {
         URI uri = UriUtils.criarUriParaRecurso(salvo.getId());
         FilmeResponse response = new FilmeResponse(
                 salvo.getId(),
+                salvo.getNome(),
                 salvo.getTitulo(),
                 salvo.getSinopse(),
                 salvo.getNota(),

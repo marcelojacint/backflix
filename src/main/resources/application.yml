@@ -35,6 +35,10 @@ logging:
       springframework:
         web: debug
 
+gemini:
+  api:
+    key: "AIzaSyDhbDL1qIi-1qc9DpfiHALbJkGhqacHTUQ"
+
 
 # level de log
 # trace - (mais detalhado - rastreamento minucioso)pega todos os outros

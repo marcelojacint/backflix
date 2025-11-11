@@ -18,7 +18,9 @@ public class Serie {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "campo obrigatório!")
+    @Column(name = "nome", nullable = false, length = 100)
+    private String nome;
+
     @Column(name = "titulo_serie", nullable = false, length = 100)
     private String tituloSerie;
 
@@ -31,14 +33,12 @@ public class Serie {
     @Column(name = "nota")
     private Double nota;
 
-    @NotBlank(message = "campo obrigatório!")
     @Column(name = "data_lancamento", nullable = false, length = 10)
     private String dataLancamento;
 
     @Column(name = "quantidade_temporadas")
     private Integer quantidadeTemporadas;
 
-    @NotNull(message = "campo obrigatório!")
     @Column(name = "quantidade_episodios", nullable = false)
     private Integer quantidadeEpisodios;
 
