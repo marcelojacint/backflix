@@ -4,10 +4,13 @@ package com.uniesp.backflix.demo.service;
 import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
 import com.uniesp.backflix.demo.model.Genero;
 import com.uniesp.backflix.demo.repository.GeneroRepository;
+import com.uniesp.backflix.demo.service.dtos.GeneroRequest;
+import com.uniesp.backflix.demo.service.dtos.GeneroResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -15,30 +18,48 @@ public class GeneroService {
 
     private final GeneroRepository generoRepository;
 
-    public List<Genero> listar() {
-        return generoRepository.findAll();
+    public List<GeneroResponse> listar() {
+        return generoRepository.findAll()
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
     }
 
-    public Genero buscarPorId(Long id) {
-        return generoRepository.findById(id)
+    public GeneroResponse buscarPorId(Long id) {
+        Genero genero = generoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Gênero não encontrado com o ID: " + id));
+        return toResponse(genero);
     }
 
-    public Genero salvar(Genero genero) {
-        return generoRepository.save(genero);
+    public GeneroResponse salvar(GeneroRequest request) {
+        Genero genero = new Genero();
+        genero.setGenero(request.getGenero());
+        Genero salvo = generoRepository.save(genero);
+        return toResponse(salvo);
     }
 
-    public Genero atualizar(Long id, Genero genero) {
+    public GeneroResponse atualizar(Long id, GeneroRequest request) {
         Genero generoExistente = generoRepository.findById(id)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Gênero não encontrado com o ID: " + id));
 
-        genero.setId(generoExistente.getId());
-        return generoRepository.save(genero);
+        generoExistente.setGenero(request.getGenero());
+        Genero atualizado = generoRepository.save(generoExistente);
+
+        return toResponse(atualizado);
     }
 
     public void remover(Long id) {
         Genero genero = generoRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Gênero não encontrado!"));
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Gênero não encontrado com o ID: " + id));
         generoRepository.delete(genero);
+    }
+
+    private GeneroResponse toResponse(Genero genero) {
+        return new GeneroResponse(genero.getId(), genero.getGenero());
+    }
+
+    public Genero buscarEntidadePorId(Long id) {
+        return generoRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException("Gênero não encontrado com o ID: " + id));
     }
 }

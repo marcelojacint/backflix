@@ -1,7 +1,7 @@
 package com.uniesp.backflix.demo.controller;
 
+
 import com.uniesp.backflix.demo.controller.utils.UriUtils;
-import com.uniesp.backflix.demo.model.Genero;
 import com.uniesp.backflix.demo.service.GeneroService;
 import com.uniesp.backflix.demo.service.dtos.GeneroRequest;
 import com.uniesp.backflix.demo.service.dtos.GeneroResponse;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/generos")
@@ -23,34 +22,25 @@ public class GeneroController {
 
     @GetMapping
     public ResponseEntity<List<GeneroResponse>> listar() {
-        List<GeneroResponse> generos = generoService.listar()
-                .stream()
-                .map(g -> new GeneroResponse(g.getId(), g.getGenero()))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(generos);
+        return ResponseEntity.ok(generoService.listar());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GeneroResponse> buscarPorId(@PathVariable Long id) {
-        Genero genero = generoService.buscarPorId(id);
-        return ResponseEntity.ok(new GeneroResponse(genero.getId(), genero.getGenero()));
+        return ResponseEntity.ok(generoService.buscarPorId(id));
     }
 
     @PostMapping
     public ResponseEntity<GeneroResponse> salvar(@Valid @RequestBody GeneroRequest request) {
-        Genero genero = new Genero();
-        genero.setGenero(request.getGenero());
-
-        Genero salvo = generoService.salvar(genero);
+        GeneroResponse salvo = generoService.salvar(request);
         URI uri = UriUtils.criarUriParaRecurso_Genero(salvo.getId());
-        return ResponseEntity.created(uri).body(new GeneroResponse(salvo.getId(), salvo.getGenero()));
+        return ResponseEntity.created(uri).body(salvo);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> atualizar(@PathVariable Long id, @Valid @RequestBody GeneroRequest request) {
-        Genero genero = new Genero(id, request.getGenero());
-        generoService.atualizar(id, genero);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<GeneroResponse> atualizar(@PathVariable Long id,
+                                                    @Valid @RequestBody GeneroRequest request) {
+        return ResponseEntity.ok(generoService.atualizar(id, request));
     }
 
     @DeleteMapping("/{id}")
