@@ -6,6 +6,7 @@ import com.uniesp.backflix.demo.model.Serie;
 import com.uniesp.backflix.demo.service.GeneroService;
 import com.uniesp.backflix.demo.service.SerieService;
 import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
+import com.uniesp.backflix.demo.service.dtos.GeneroResponse;
 import com.uniesp.backflix.demo.service.dtos.SerieRequest;
 import com.uniesp.backflix.demo.service.dtos.SerieResponse;
 import jakarta.validation.Valid;
@@ -67,7 +68,7 @@ public class SerieController {
 
     @PostMapping
     public ResponseEntity<SerieResponse> salvar(@Valid @RequestBody SerieRequest request) {
-        Genero genero = generoService.buscarPorId(request.getGeneroId());
+        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
 
         Serie serie = Serie.builder()
                 .tituloSerie(request.getTituloSerie())
@@ -101,7 +102,7 @@ public class SerieController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable String id, @Valid @RequestBody SerieRequest request) {
-        Genero genero = generoService.buscarPorId(request.getGeneroId());
+        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
 
         Serie serie = Serie.builder()
                 .tituloSerie(request.getTituloSerie())

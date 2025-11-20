@@ -62,7 +62,7 @@ public class FilmeController {
 
     @PostMapping
     public ResponseEntity<FilmeResponse> salvar(@Valid @RequestBody FilmeRequest request) {
-        Genero genero = generoService.buscarPorId(request.getGeneroId());
+        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
 
         Filme filme = new Filme();
         filme.setTitulo(request.getTitulo());
@@ -93,7 +93,7 @@ public class FilmeController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable String id, @Valid @RequestBody FilmeRequest request) {
-        Genero genero = generoService.buscarPorId(request.getGeneroId());
+        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
 
         Filme filme = new Filme();
         filme.setTitulo(request.getTitulo());
