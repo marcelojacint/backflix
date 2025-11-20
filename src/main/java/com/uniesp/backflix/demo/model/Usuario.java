@@ -2,8 +2,10 @@ package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Table(name = "usuarios")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Usuario {
 
     @Id

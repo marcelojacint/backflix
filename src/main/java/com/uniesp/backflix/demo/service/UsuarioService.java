@@ -43,13 +43,12 @@ public class UsuarioService {
     }
 
     private void validaEmailECpfUsuario(Usuario usuario) {
-        if (!repository.existsByEmailAndCpf(usuario.getEmail(), usuario.getCpf())) {
+        if (repository.existsByEmail(usuario.getEmail()) || repository.existsByCpf(usuario.getCpf())) {
             throw new EntidadeNaoEncontradaException("usuário já existe no banco!");
         }
     }
 
     public UsuarioResponseDTO buscar(String cpf) {
-
         Usuario usuario = verificaUsuarioPorcpf(cpf);
         UsuarioResponseDTO usuarioResponseDTO = UsuarioConverter.paraUsuarioResponseDTO(usuario);
         return usuarioResponseDTO;
@@ -61,19 +60,19 @@ public class UsuarioService {
     }
 
     public UsuarioResponseDTO atualizar(String id, UsuarioRequestDTO usuarioRequestDTO) {
-        Usuario existente = repository.findById(UUID.fromString(id))
+        Usuario usuarioExistente = repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
 
         Usuario usuario = UsuarioConverter.paraUsuario(usuarioRequestDTO);
 
-        if (usuario.getNomeCompleto() != null) existente.setNomeCompleto(usuario.getNomeCompleto());
-        if (usuario.getEmail() != null) existente.setEmail(usuario.getEmail());
-        if (usuario.getSenha() != null) existente.setSenha(usuario.getSenha());
-        if (usuario.getCpf() != null) existente.setCpf(usuario.getCpf());
-        if (usuario.getDataNascimento() != null) existente.setDataNascimento(usuario.getDataNascimento());
-        if (usuario.getCartao() != null) existente.setCartao(usuario.getCartao());
+        if (usuario.getNomeCompleto() != null) usuarioExistente.setNomeCompleto(usuario.getNomeCompleto());
+        if (usuario.getEmail() != null) usuarioExistente.setEmail(usuario.getEmail());
+        if (usuario.getSenha() != null) usuarioExistente.setSenha(usuario.getSenha());
+        if (usuario.getCpf() != null) usuarioExistente.setCpf(usuario.getCpf());
+        if (usuario.getDataNascimento() != null) usuarioExistente.setDataNascimento(usuario.getDataNascimento());
+        if (usuario.getCartao() != null) usuarioExistente.setCartao(usuario.getCartao());
 
-        Usuario usuarioSalvo = repository.save(existente);
+        Usuario usuarioSalvo = repository.save(usuarioExistente);
 
         UsuarioResponseDTO usuarioResponseDTO = UsuarioConverter.paraUsuarioResponseDTO(usuarioSalvo);
 
@@ -81,8 +80,11 @@ public class UsuarioService {
     }
 
     public void deletar(String id) {
-        repository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
+        repository.findById(UUID.fromString(id)).ifPresentOrElse(repository::delete,
+                () -> {
+                    throw new EntidadeNaoEncontradaException("Usuário não encontrado");
+                });
+
 
     }
 
