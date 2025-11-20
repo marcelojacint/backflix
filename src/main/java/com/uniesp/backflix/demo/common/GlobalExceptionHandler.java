@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.List;
 
@@ -37,4 +38,11 @@ public class GlobalExceptionHandler {
     public ErroResposta handlerRegistroDuplicadoException(EntidadeNaoEncontradaException e) {
         return ErroResposta.conflito(e.getMessage());
     }
+
+//    @ExceptionHandler(NoResourceFoundException.class)
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public ErroResposta handleMethodArgumentNotValidException(NoResourceFoundException e) {
+//        return ErroResposta.conflito(e.getMessage());
+//    }
+
 }

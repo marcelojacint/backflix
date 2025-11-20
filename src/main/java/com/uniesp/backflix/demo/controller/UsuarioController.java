@@ -41,10 +41,9 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(usuarioResponseDTO);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> buscar(@PathVariable("id") String id) {
-        log.info("deletando autor de ID: {} ", id);
-        UsuarioResponseDTO usuarioResponseDTO = service.buscar(id);
+    @GetMapping("/{cpf}")
+    public ResponseEntity<UsuarioResponseDTO> buscar(@PathVariable("cpf") String cpf) {
+        UsuarioResponseDTO usuarioResponseDTO = service.buscar(cpf);
         return ResponseEntity.ok(usuarioResponseDTO);
     }
 
@@ -56,6 +55,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable String id) {
+        log.info("deletando autor de ID: {} ", id);
         service.deletar(id);
         return ResponseEntity.noContent().build();
     }
