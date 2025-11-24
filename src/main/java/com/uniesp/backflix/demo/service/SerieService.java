@@ -1,8 +1,12 @@
 package com.uniesp.backflix.demo.service;
 
 import com.uniesp.backflix.demo.exception.EntidadeNaoEncontradaException;
+import com.uniesp.backflix.demo.model.Genero;
 import com.uniesp.backflix.demo.model.Serie;
 import com.uniesp.backflix.demo.repository.SerieRepository;
+import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
+import com.uniesp.backflix.demo.service.dtos.SerieRequest;
+import com.uniesp.backflix.demo.service.dtos.SerieResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,33 @@ import java.util.UUID;
 public class SerieService {
 
     private final SerieRepository repository;
+
+    public SerieResponse toResponse(Serie s) {
+        return new SerieResponse(
+                s.getId(),
+                s.getTitulo(),
+                s.getSinopse(),
+                s.getNota(),
+                s.getDataLancamento(),
+                s.getQuantidadeTemporadas(),
+                s.getQuantidadeEpisodios(),
+                s.getClassificacaoIdade(),
+                new GeneroDTO(s.getGenero().getId(), s.getGenero().getGenero())
+        );
+    }
+
+    public Serie toEntity(SerieRequest req, Genero genero) {
+        return Serie.builder()
+                .titulo(req.getTitulo())
+                .sinopse(req.getSinopse())
+                .nota(req.getNota())
+                .dataLancamento(req.getDataLancamento())
+                .quantidadeTemporadas(req.getQuantidadeTemporadas())
+                .quantidadeEpisodios(req.getQuantidadeEpisodios())
+                .classificacaoIdade(req.getClassificacaoIdade())
+                .genero(genero)
+                .build();
+    }
 
     public List<Serie> listar() {
         return repository.findAll();
@@ -29,10 +60,9 @@ public class SerieService {
     }
 
     public Serie atualizar(String id, Serie serie) {
-        Serie existente = repository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new EntidadeNaoEncontradaException("Série não encontrada"));
+        Serie existente = buscar(id);
 
-        if (serie.getTituloSerie() != null) existente.setTituloSerie(serie.getTituloSerie());
+        if (serie.getTitulo() != null) existente.setTitulo(serie.getTitulo());
         if (serie.getSinopse() != null) existente.setSinopse(serie.getSinopse());
         if (serie.getNota() != null) existente.setNota(serie.getNota());
         if (serie.getDataLancamento() != null) existente.setDataLancamento(serie.getDataLancamento());
@@ -45,12 +75,7 @@ public class SerieService {
     }
 
     public void deletar(String id) {
-        repository.findById(UUID.fromString(id))
-                .ifPresentOrElse(
-                        repository::delete,
-                        () -> {
-                            throw new EntidadeNaoEncontradaException("Série não encontrada!");
-                        }
-                );
+        Serie serie = buscar(id);
+        repository.delete(serie);
     }
 }

@@ -45,7 +45,7 @@ public class GeminiService {
     }
 
     private void existeFilmeOuSeriePorNome(String nome) {
-        if(!filmeRepository.existsByNome(nome) || !serieRepository.existsByNome(nome)) {
+        if(!filmeRepository.existsByTitulo(nome) || !serieRepository.existsByTitulo(nome)) {
             throw new EntidadeNaoEncontradaException("Filme ou Série não encontrados!");
         }
     }

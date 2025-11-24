@@ -52,7 +52,7 @@ public class MinhaListaService {
         return MinhaListaResponseDTO.builder()
                 .idMinhaLista(salvo.getIdMinhaLista())
                 .tituloFilme(filme != null ? filme.getTitulo() : null)
-                .tituloSerie(serie != null ? serie.getTituloSerie() : null)
+                .tituloSerie(serie != null ? serie.getTitulo() : null)
                 .nomeUsuario(usuario.getNomeCompleto())
                 .build();
     }
@@ -62,7 +62,7 @@ public class MinhaListaService {
                 .map(m -> MinhaListaResponseDTO.builder()
                         .idMinhaLista(m.getIdMinhaLista())
                         .tituloFilme(m.getFilme() != null ? m.getFilme().getTitulo() : null)
-                        .tituloSerie(m.getSerie() != null ? m.getSerie().getTituloSerie() : null)
+                        .tituloSerie(m.getSerie() != null ? m.getSerie().getTitulo() : null)
                         .nomeUsuario(m.getUsuario().getNomeCompleto())
                         .build())
                 .collect(Collectors.toList());

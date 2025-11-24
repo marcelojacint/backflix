@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface SerieRepository extends JpaRepository<Serie, UUID> {
 
-    Boolean existsByNome(String nome);
+    Boolean existsByTitulo(String titulo);
 }

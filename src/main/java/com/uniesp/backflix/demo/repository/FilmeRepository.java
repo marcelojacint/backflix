@@ -9,7 +9,7 @@ import java.util.UUID;
 @Repository
 public interface FilmeRepository extends JpaRepository<Filme, UUID> {
 
-    Boolean existsByNome(String nome);
+    Boolean existsByTitulo(String titulo);
 
 
 }

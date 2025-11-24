@@ -2,27 +2,27 @@ package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "series")
-@Data
-@Builder
 public class Serie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "nome", nullable = false, length = 100)
-    private String nome;
-
     @Column(name = "titulo_serie", nullable = false, length = 100)
-    private String tituloSerie;
+    private String titulo;
 
     @Size(max = 1000)
     @Column(name = "sinopse", length = 1000)

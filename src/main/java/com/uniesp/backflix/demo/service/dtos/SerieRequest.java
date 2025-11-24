@@ -10,11 +10,8 @@ import lombok.Data;
 @Data
 public class SerieRequest {
 
-    @NotBlank(message = "campo obrigatório!")
-    private String nome;
-
     @NotBlank(message = "O campo 'Título' é obrigatório.")
-    private String tituloSerie;
+    private String titulo;
 
     private String sinopse;
 
