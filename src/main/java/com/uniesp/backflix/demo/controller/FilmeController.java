@@ -1,13 +1,10 @@
 package com.uniesp.backflix.demo.controller;
 
+
 import com.uniesp.backflix.demo.controller.utils.UriUtils;
-import com.uniesp.backflix.demo.model.Filme;
-import com.uniesp.backflix.demo.model.Genero;
 import com.uniesp.backflix.demo.service.FilmeService;
-import com.uniesp.backflix.demo.service.GeneroService;
 import com.uniesp.backflix.demo.service.dtos.FilmeRequest;
 import com.uniesp.backflix.demo.service.dtos.FilmeResponse;
-import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Tag(name = "Filmes", description = "Operações relacionadas a filmes")
 @RestController
@@ -25,85 +21,27 @@ import java.util.stream.Collectors;
 public class FilmeController {
 
     private final FilmeService filmeService;
-    private final GeneroService generoService; // necessário para buscar o gênero pelo ID
 
     @GetMapping
     public ResponseEntity<List<FilmeResponse>> listar() {
-        List<FilmeResponse> filmes = filmeService.listar().stream()
-                .map(f -> new FilmeResponse(
-                        f.getId(),
-                        f.getTitulo(),
-                        f.getSinopse(),
-                        f.getNota(),
-                        f.getDataLancamento(),
-                        f.getDuracaoMinutos(),
-                        f.getClassificacaoIndicativa(),
-                        new GeneroDTO(f.getGenero().getId(), f.getGenero().getGenero())
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(filmes);
+        return ResponseEntity.ok(filmeService.listarResponses());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FilmeResponse> buscarPorId(@PathVariable String id) {
-        Filme f = filmeService.buscarPorId(id);
-        FilmeResponse response = new FilmeResponse(
-                f.getId(),
-                f.getTitulo(),
-                f.getSinopse(),
-                f.getNota(),
-                f.getDataLancamento(),
-                f.getDuracaoMinutos(),
-                f.getClassificacaoIndicativa(),
-                new GeneroDTO(f.getGenero().getId(), f.getGenero().getGenero())
-        );
-        return ResponseEntity.ok(response);
+    public ResponseEntity<FilmeResponse> buscar(@PathVariable String id) {
+        return ResponseEntity.ok(filmeService.buscarResponse(id));
     }
 
     @PostMapping
     public ResponseEntity<FilmeResponse> salvar(@Valid @RequestBody FilmeRequest request) {
-        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
-
-        Filme filme = new Filme();
-        filme.setTitulo(request.getTitulo());
-        filme.setSinopse(request.getSinopse());
-        filme.setNota(request.getNota());
-        filme.setDataLancamento(request.getDataLancamento());
-        filme.setDuracaoMinutos(request.getDuracaoMinutos());
-        filme.setClassificacaoIndicativa(request.getClassificacaoIndicativa());
-        filme.setGenero(genero);
-
-        Filme salvo = filmeService.salvar(filme);
-
-        URI uri = UriUtils.criarUriParaRecurso(salvo.getId());
-        FilmeResponse response = new FilmeResponse(
-                salvo.getId(),
-                salvo.getTitulo(),
-                salvo.getSinopse(),
-                salvo.getNota(),
-                salvo.getDataLancamento(),
-                salvo.getDuracaoMinutos(),
-                salvo.getClassificacaoIndicativa(),
-                new GeneroDTO(genero.getId(), genero.getGenero())
-        );
-
+        FilmeResponse response = filmeService.salvar(request);
+        URI uri = UriUtils.criarUriParaRecurso(response.getId());
         return ResponseEntity.created(uri).body(response);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable String id, @Valid @RequestBody FilmeRequest request) {
-        Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
-
-        Filme filme = new Filme();
-        filme.setTitulo(request.getTitulo());
-        filme.setSinopse(request.getSinopse());
-        filme.setNota(request.getNota());
-        filme.setDataLancamento(request.getDataLancamento());
-        filme.setDuracaoMinutos(request.getDuracaoMinutos());
-        filme.setClassificacaoIndicativa(request.getClassificacaoIndicativa());
-        filme.setGenero(genero);
-
-        filmeService.atualizar(id, filme);
+        filmeService.atualizar(id, request);
         return ResponseEntity.noContent().build();
     }
 

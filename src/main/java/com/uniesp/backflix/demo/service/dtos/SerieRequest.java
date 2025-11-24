@@ -11,7 +11,7 @@ import lombok.Data;
 public class SerieRequest {
 
     @NotBlank(message = "O campo 'Título' é obrigatório.")
-    private String tituloSerie;
+    private String titulo;
 
     private String sinopse;
 

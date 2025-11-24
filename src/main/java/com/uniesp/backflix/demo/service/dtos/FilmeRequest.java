@@ -1,6 +1,5 @@
 package com.uniesp.backflix.demo.service.dtos;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;

@@ -34,86 +34,31 @@ public class SerieController {
     @GetMapping
     public ResponseEntity<List<SerieResponse>> listar() {
         List<SerieResponse> series = service.listar().stream()
-                .map(s -> new SerieResponse(
-                        s.getId(),
-                        s.getTituloSerie(),
-                        s.getSinopse(),
-                        s.getNota(),
-                        s.getDataLancamento(),
-                        s.getQuantidadeTemporadas(),
-                        s.getQuantidadeEpisodios(),
-                        s.getClassificacaoIdade(),
-                        new GeneroDTO(s.getGenero().getId(), s.getGenero().getGenero())
-                ))
+                .map(service::toResponse)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(series);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<SerieResponse> buscar(@PathVariable String id) {
-        Serie s = service.buscar(id);
-        SerieResponse response = new SerieResponse(
-                s.getId(),
-                s.getTituloSerie(),
-                s.getSinopse(),
-                s.getNota(),
-                s.getDataLancamento(),
-                s.getQuantidadeTemporadas(),
-                s.getQuantidadeEpisodios(),
-                s.getClassificacaoIdade(),
-                new GeneroDTO(s.getGenero().getId(), s.getGenero().getGenero())
-        );
-        return ResponseEntity.ok(response);
+        Serie serie = service.buscar(id);
+        return ResponseEntity.ok(service.toResponse(serie));
     }
 
     @PostMapping
     public ResponseEntity<SerieResponse> salvar(@Valid @RequestBody SerieRequest request) {
         Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
-
-        Serie serie = Serie.builder()
-                .tituloSerie(request.getTituloSerie())
-                .sinopse(request.getSinopse())
-                .nota(request.getNota())
-                .dataLancamento(request.getDataLancamento())
-                .quantidadeTemporadas(request.getQuantidadeTemporadas())
-                .quantidadeEpisodios(request.getQuantidadeEpisodios())
-                .classificacaoIdade(request.getClassificacaoIdade())
-                .genero(genero)
-                .build();
-
+        Serie serie = service.toEntity(request, genero);
         Serie salva = service.salvar(serie);
 
         URI uri = UriUtils.criarUriParaRecurso(salva.getId());
-        SerieResponse response = new SerieResponse(
-                salva.getId(),
-                salva.getTituloSerie(),
-                salva.getSinopse(),
-                salva.getNota(),
-                salva.getDataLancamento(),
-                salva.getQuantidadeTemporadas(),
-                salva.getQuantidadeEpisodios(),
-                salva.getClassificacaoIdade(),
-                new GeneroDTO(genero.getId(), genero.getGenero())
-        );
-
-        return ResponseEntity.created(uri).body(response);
+        return ResponseEntity.created(uri).body(service.toResponse(salva));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<Void> atualizar(@PathVariable String id, @Valid @RequestBody SerieRequest request) {
         Genero genero = generoService.buscarEntidadePorId(request.getGeneroId());
-
-        Serie serie = Serie.builder()
-                .tituloSerie(request.getTituloSerie())
-                .sinopse(request.getSinopse())
-                .nota(request.getNota())
-                .dataLancamento(request.getDataLancamento())
-                .quantidadeTemporadas(request.getQuantidadeTemporadas())
-                .quantidadeEpisodios(request.getQuantidadeEpisodios())
-                .classificacaoIdade(request.getClassificacaoIdade())
-                .genero(genero)
-                .build();
-
+        Serie serie = service.toEntity(request, genero);
 
         service.atualizar(id, serie);
         return ResponseEntity.noContent().build();

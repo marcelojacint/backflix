@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Table(name = "filmes")
 public class Filme {
 
-    @Id //identificando o id da tabela no banco.
+    @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
