@@ -9,6 +9,7 @@ import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
 import com.uniesp.backflix.demo.service.dtos.GeneroResponse;
 import com.uniesp.backflix.demo.service.dtos.SerieRequest;
 import com.uniesp.backflix.demo.service.dtos.SerieResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Séries", description = "Operações relacionadas a séries")
 @RestController
 @RequestMapping("/series")
 @RequiredArgsConstructor

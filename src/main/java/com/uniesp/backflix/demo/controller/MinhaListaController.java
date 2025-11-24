@@ -4,12 +4,13 @@ package com.uniesp.backflix.demo.controller;
 import com.uniesp.backflix.demo.service.MinhaListaService;
 import com.uniesp.backflix.demo.service.dtos.MinhaListaRequestDTO;
 import com.uniesp.backflix.demo.service.dtos.MinhaListaResponseDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@Tag(name = "Minha_lista", description = "Operações relacionadas a Minha_lista")
 @RestController
 @RequestMapping("/minha-lista")
 @RequiredArgsConstructor

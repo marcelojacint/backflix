@@ -8,6 +8,7 @@ import com.uniesp.backflix.demo.service.GeneroService;
 import com.uniesp.backflix.demo.service.dtos.FilmeRequest;
 import com.uniesp.backflix.demo.service.dtos.FilmeResponse;
 import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Filmes", description = "Operações relacionadas a filmes")
 @RestController
 @RequestMapping("/filmes")
 @RequiredArgsConstructor
