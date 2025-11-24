@@ -11,7 +11,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilmeResponse {
     private UUID id;
-    private String nome;
     private String titulo;
     private String sinopse;
     private Integer nota;

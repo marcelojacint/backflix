@@ -18,9 +18,6 @@ public class Serie {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "nome", nullable = false, length = 100)
-    private String nome;
-
     @Column(name = "titulo_serie", nullable = false, length = 100)
     private String tituloSerie;
 

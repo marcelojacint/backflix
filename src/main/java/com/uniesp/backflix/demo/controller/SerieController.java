@@ -36,7 +36,6 @@ public class SerieController {
         List<SerieResponse> series = service.listar().stream()
                 .map(s -> new SerieResponse(
                         s.getId(),
-                        s.getNome(),
                         s.getTituloSerie(),
                         s.getSinopse(),
                         s.getNota(),
@@ -55,7 +54,6 @@ public class SerieController {
         Serie s = service.buscar(id);
         SerieResponse response = new SerieResponse(
                 s.getId(),
-                s.getNome(),
                 s.getTituloSerie(),
                 s.getSinopse(),
                 s.getNota(),
@@ -88,7 +86,6 @@ public class SerieController {
         URI uri = UriUtils.criarUriParaRecurso(salva.getId());
         SerieResponse response = new SerieResponse(
                 salva.getId(),
-                salva.getNome(),
                 salva.getTituloSerie(),
                 salva.getSinopse(),
                 salva.getNota(),

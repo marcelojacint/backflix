@@ -10,9 +10,6 @@ import lombok.Data;
 @Data
 public class FilmeRequest {
 
-    @NotBlank(message = "campo obrigatório!")
-    private String nome;
-
     @NotBlank(message = "O campo 'Título' é obrigatório.")
     private String titulo;
 

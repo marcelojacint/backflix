@@ -1,10 +1,7 @@
 package com.uniesp.backflix.demo.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,17 +22,15 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "nome", nullable = false, length = 100)
-    private String nome;
-
     @Column(nullable = false, length = 100)
     private String titulo;
 
-    @Column(name = "sinpse", length = 200)
+    @Column(name = "sinopse", length = 200)
     private String sinopse;
 
     @Column(name = "nota", length = 10)
-    @Size(min = 1, max = 10)
+    @Min(1)
+    @Max(10)
     private Integer nota;
 
     @Column(name = "data_lancamento")
