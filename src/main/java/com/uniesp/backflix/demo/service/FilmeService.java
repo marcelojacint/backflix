@@ -7,6 +7,8 @@ import com.uniesp.backflix.demo.service.dtos.FilmeRequest;
 import com.uniesp.backflix.demo.service.dtos.FilmeResponse;
 import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +21,7 @@ public class FilmeService {
     private final FilmeRepository filmeRepository;
     private final GeneroService generoService;
 
+    @Cacheable(value = "filmes")
     public List<FilmeResponse> listarResponses() {
         return filmeRepository.findAll()
                 .stream()
@@ -31,6 +34,7 @@ public class FilmeService {
         return toResponse(filme);
     }
 
+    @CacheEvict(value = "filmes", allEntries = true)
     public Filme salvarFromRequest(FilmeRequest request) {
         Filme filme = toEntity(request);
         return filmeRepository.save(filme);

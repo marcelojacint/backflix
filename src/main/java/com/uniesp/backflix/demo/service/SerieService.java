@@ -8,6 +8,8 @@ import com.uniesp.backflix.demo.service.dtos.GeneroDTO;
 import com.uniesp.backflix.demo.service.dtos.SerieRequest;
 import com.uniesp.backflix.demo.service.dtos.SerieResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,10 +48,12 @@ public class SerieService {
                 .build();
     }
 
+    @Cacheable(value = "series")
     public List<Serie> listar() {
         return repository.findAll();
     }
 
+    @CacheEvict(value = "series", allEntries = true)
     public Serie salvar(Serie serie) {
         return repository.save(serie);
     }
@@ -58,7 +62,7 @@ public class SerieService {
         return repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Série não encontrada!"));
     }
-
+    @CacheEvict(value = "series", allEntries = true)
     public Serie atualizar(String id, Serie serie) {
         Serie existente = buscar(id);
 
@@ -74,6 +78,7 @@ public class SerieService {
         return repository.save(existente);
     }
 
+    @CacheEvict(value = "series", allEntries = true)
     public void deletar(String id) {
         Serie serie = buscar(id);
         repository.delete(serie);

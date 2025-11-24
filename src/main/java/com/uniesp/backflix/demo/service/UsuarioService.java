@@ -6,6 +6,8 @@ import com.uniesp.backflix.demo.repository.UsuarioRepository;
 import com.uniesp.backflix.demo.service.converter.UsuarioConverter;
 import com.uniesp.backflix.demo.service.dtos.UsuarioRequestDTO;
 import com.uniesp.backflix.demo.service.dtos.UsuarioResponseDTO;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,6 +25,7 @@ public class UsuarioService {
 
     private final UsuarioRepository repository;
 
+    @Cacheable(value = "usuarios")
     public Page<UsuarioResponseDTO> listar(int pagina, int tamanho) {
         Pageable pageable = PageRequest.of(pagina, tamanho);
         Page<Usuario> usuariosPage = repository.findAll(pageable);
@@ -34,6 +37,7 @@ public class UsuarioService {
         return usuariosPage.map(UsuarioConverter::paraUsuarioResponseDTO);
     }
 
+    @CacheEvict(value = "usuarios", allEntries = true)
     public UsuarioResponseDTO salvar(UsuarioRequestDTO usuarioDto) {
         Usuario usuario = UsuarioConverter.paraUsuario(usuarioDto);
         validaEmailECpfUsuario(usuario);
@@ -58,7 +62,7 @@ public class UsuarioService {
         return repository.findByCpf(cpf)
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("usuário não encontrado!"));
     }
-
+    @CacheEvict(value = "usuarios", allEntries = true)
     public UsuarioResponseDTO atualizar(String id, UsuarioRequestDTO usuarioRequestDTO) {
         Usuario usuarioExistente = repository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new EntidadeNaoEncontradaException("Usuário não encontrado"));
@@ -79,6 +83,7 @@ public class UsuarioService {
         return usuarioResponseDTO;
     }
 
+    @CacheEvict(value = "usuarios", allEntries = true)
     public void deletar(String id) {
         repository.findById(UUID.fromString(id)).ifPresentOrElse(repository::delete,
                 () -> {
