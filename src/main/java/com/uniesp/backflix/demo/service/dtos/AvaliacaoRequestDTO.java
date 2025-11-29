@@ -1,20 +1,14 @@
 package com.uniesp.backflix.demo.service.dtos;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-
+import lombok.Data;
 import java.util.UUID;
 
-@Builder
-public record AvaliacaoRequestDTO(
-        @NotNull(message = "ID do usuário é obrigatório!")
-        UUID usuarioId,
-        
-        UUID filmeId,
-        
-        UUID serieId,
-        
-        @NotBlank(message = "Comentário é obrigatório!")
-        String comentario
-) {}
+@Data
+public class AvaliacaoRequestDTO {
+
+        private UUID usuarioId;
+        private UUID filmeId;
+        private UUID serieId;
+        private String comentario;
+        private Integer nota;
+}

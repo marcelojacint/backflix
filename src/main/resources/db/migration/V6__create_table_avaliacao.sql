@@ -4,6 +4,7 @@ CREATE TABLE avaliacoes (
     id_usuario UUID NOT NULL,
     id_filme UUID,
     id_serie UUID,
+    nota INT NOT NULL,
 
     comentario VARCHAR(300) NOT NULL,
     data_avaliacao DATE NOT NULL,
